@@ -1,0 +1,32 @@
+version: "2.1"
+
+volumes:
+  x11:
+  files:
+
+services:
+  gst-playground:
+    build: ./
+    restart: always
+    privileged: true # run in privileged mode for easy access to soundcards and cameras
+    depends_on:
+      - xserver
+    volumes:
+      - x11:/tmp/.X11-unix
+      - files:/files
+    devices:
+      - /dev/dri
+    group_add:
+      - video
+    environment:
+      - GST_DEBUG_DUMP_DOT_DIR=/files/
+      - GST_DEBUG=3
+
+  xserver:
+    image: balenablocks/xserver
+    restart: always
+    privileged: true
+    volumes:
+      - "x11:/tmp/.X11-unix"
+    environment:
+      - CURSOR=false

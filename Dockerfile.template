@@ -1,0 +1,51 @@
+ARG BALENA_ARCH=%%BALENA_ARCH%%
+
+FROM balenalib/$BALENA_ARCH-ubuntu:latest
+
+# UDev is required to autodetect ALSA devices
+ENV UDEV=on
+
+# Install alsa, ladspa & gstreamer for UBUNTU
+RUN install_packages \
+    alsa-utils \
+    ladspa-sdk \
+    gstreamer1.0-alsa \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    gstreamer1.0-tools \
+    libgstreamer1.0-0 \
+    libgstreamer1.0-dev \
+    v4l-utils \
+    mkvtoolnix
+    # gstreamer1.0-omx-rpi
+
+# Install dependencies
+RUN install_packages \
+    build-essential \
+    git \
+    graphviz \
+    libgraphviz-dev \
+    octave \
+    epstool \
+    babeltrace \
+    autoconf \
+    automake \
+    libtool \
+    gtk-doc-tools \
+    gnuplot \
+    fonts-freefont-otf 
+
+# Compile GST-Shark, this will take a while
+RUN git clone https://github.com/RidgeRun/gst-shark/
+WORKDIR /gst-shark
+RUN ./autogen.sh --prefix /usr/lib/ --libdir /usr/lib/arm-linux-gnueabihf/
+RUN make
+RUN make install 
+
+COPY . /usr/src/
+
+# Start
+CMD [ "/bin/bash", "/usr/src/start.sh" ]
