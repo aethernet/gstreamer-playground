@@ -20,7 +20,9 @@ services:
       - video
     environment:
       - GST_DEBUG_DUMP_DOT_DIR=/files/
-      - GST_DEBUG=3
+      - GST_DEBUG="GST_TRACER:7"
+      - GST_TRACERS="cpuusage"
+      - GST_SHARK_LOCATION=/files/traces
 
   xserver:
     image: balenablocks/xserver

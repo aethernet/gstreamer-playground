@@ -5,6 +5,9 @@ echo "Device Type is $BALENA_DEVICE_TYPE"
 
 # we can do stuff here if needed (like configure camera with v4l2-ctl)
 
+mkdir -p /files/traces
+mkdir -p /files/dots
+
 # Wait for xserver to accept connections if we're a receiver
 if [ "$SENDER_OR_RECEIVER" == "receiver" ]; then
   while [ `ls /tmp/.X11-unix/ | wc -l` == 0 ]; do echo "display not created yet"; sleep 0.5; done; echo "display created";
