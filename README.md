@@ -8,6 +8,8 @@ This project aim is to help debug and profile gstreamer pipeline.
 
 This is a work in progress
 
+Note that at the time of writing the version of gstreamer install in this project is : 1.16.2
+
 ## Architecture
 
 This should run on either ARMv7, ARM64 and x86 architecture.
@@ -64,6 +66,8 @@ You can also activate the `public url` in balenacloud and access those thru ther
 
 ## Using GSTShark
 
+(this is currently broken)
+
 `Gstshark` is a profiling tool for your `gstreamer` pipeline. It's made by great folks at [https://ridgerun.com](Ridgerun).
 
 [The doc of the tool is on their wiki](https://developer.ridgerun.com/wiki/index.php?title=GstShark), be sure to read it.
@@ -105,8 +109,21 @@ Usage is : `cd /files/traces && ./gst-shark/scripts/graphics/gstshark-plot /file
 
 You can change the output format to `png` by replacing `pdf`, and choose another place for the legends (`inside`, `outside` or `extern`).
 
+## Other tools
+
+- `Alsa` : for audio test, you can use `arecord` and `aplay` to test audio devices
+- `v4l-utils` : for changing camera parameters or listing devices with `v4l2-ctl`
+- `mkvtoolnix` : if you want to play around with `matroska` files
+
+### Useful commands :
+
+- `arecord -l` : list audio devices availble for recording
+- `aplay -l` : list audio devices availble for playing
+- `v4l2-ctl --list-devices` : list video devices
+
 # TODO and next steps for this project
 
+- [ ] Understand why no trace files are produced right now
 - [ ] adding some automation to the creation of images and plots from raw dot and traces files
 - [ ] accepting a pipeline as an ENV var
 - [ ] accepting a time limit to run the pipeline as ENV var

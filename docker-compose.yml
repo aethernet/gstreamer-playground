@@ -19,10 +19,10 @@ services:
     group_add:
       - video
     environment:
-      - GST_DEBUG_DUMP_DOT_DIR=/files/
-      - GST_DEBUG="GST_TRACER:7"
-      - GST_TRACERS="cpuusage"
-      - GST_SHARK_LOCATION=/files/traces
+      - GST_DEBUG_DUMP_DOT_DIR=/files/dots
+      - GST_DEBUG=GST_TRACER:7
+      - GST_TRACERS=cpuusage;framerate
+      - GST_SHARK_LOCATION=/files/traces/
 
   xserver:
     image: balenablocks/xserver
@@ -32,3 +32,14 @@ services:
       - "x11:/tmp/.X11-unix"
     environment:
       - CURSOR=false
+
+  files:
+    #image: bh.cr/edwin3/files
+    build: ./files
+    restart: always
+    volumes:
+      - "files:/files"
+    environment:
+      - BROWSE_FOLDER=/files
+    ports:
+      - 80
