@@ -35,9 +35,17 @@ Connect using `ssh` (either thru balena cli or cloud) into the service.
 
 Use `gst-launch-1.0 -ve YOUR ! TEST ! PIPE`. Let it run as long as you need, press `CTRL+C` to interupt it.
 
+### Using ENV
+
+If you set `PIPELINE` env to a pipe, it will be run at startup.
+
+ie : `PIPELINE=videotestsrc ! fakesink`
+
+You can limit the running duration of the pipeline with `STOP_PIPELINE_AFTER_SEC` (in sec).
+
 ## Log level
 
-Log level is set to 3 (FIXME) by default.
+Log level is set to 7 by default.
 You can change it to any level using the `GST_DEBUG` environment variable (in docker-compose.yml, balena cloud, or in the running container).
 
 Valid Levels are 0 to 9, check the [`gstreamer` doc](https://gstreamer.freedesktop.org/documentation/tutorials/basic/debugging-tools.html?gi-language=c) for more infos.
@@ -46,7 +54,19 @@ Valid Levels are 0 to 9, check the [`gstreamer` doc](https://gstreamer.freedeskt
 
 Thanks to `GST_DEBUG_DUMP_DOT_DIR` env var set in docker-compose.yml, `gstreamer` will output a `dot` file at each change of pipeline status. (PREROLL, RUNNING, ...).
 
-Those `dot` files are stored in `/files/dots` which are served on port 80 by `edwin3/files` block.
+Dots files will be automatically turned into `PDF` and put into the `/files/` folder.
+
+You can retrieve them using the web interface (cf Acessing files below)
+
+Note that files will be erase at startup, unless you use the `PERSIST_FILES` ENV.
+
+If you prefer `png` over pdf, set `DOT_PROCESSING_PNG` to true.
+
+### Manually turn the dots into images
+
+Turn off the automatic process by adding `NO_DOT_PROCESSING=true` to the env.
+
+The `dot` files are stored in `/files/dots` which are served on port 80 by `edwin3/files` block.
 
 You can turn those to `png` or `pdf` with the following command :
 
@@ -109,6 +129,13 @@ Usage is : `cd /files/traces && ./gst-shark/scripts/graphics/gstshark-plot /file
 
 You can change the output format to `png` by replacing `pdf`, and choose another place for the legends (`inside`, `outside` or `extern`).
 
+## XServer
+
+An X11 Server is launched thanks to [balenablocks/xserver](https://hub.balena.io/balenablocks/xserver).
+
+The start script will wait for the server to be ready before processing something else.
+You can turn off the wait by setting `NOWAIT_X` to true in the ENV.
+
 ## Other tools
 
 - `Alsa` : for audio test, you can use `arecord` and `aplay` to test audio devices
@@ -124,8 +151,6 @@ You can change the output format to `png` by replacing `pdf`, and choose another
 # TODO and next steps for this project
 
 - [ ] Understand why no trace files are produced right now
-- [ ] adding some automation to the creation of images and plots from raw dot and traces files
-- [ ] accepting a pipeline as an ENV var
-- [ ] accepting a time limit to run the pipeline as ENV var
+- [ ] adding some automation to plots traces to pdf
 - [ ] making a webpage with options to run an arbitrary pipe and get the resulting visualizations and graphs
 - [ ] build a living library of useful pipelines

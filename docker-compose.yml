@@ -23,6 +23,8 @@ services:
       - GST_DEBUG=GST_TRACER:7
       - GST_TRACERS=cpuusage;framerate
       - GST_SHARK_LOCATION=/files/traces/
+      - PIPELINE=videotestsrc ! fakesink
+      - STOP_PIPELINE_AFTER_SEC=10
 
   xserver:
     image: balenablocks/xserver
@@ -34,7 +36,6 @@ services:
       - CURSOR=false
 
   files:
-    #image: bh.cr/edwin3/files
     build: ./files
     restart: always
     volumes:
