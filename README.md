@@ -8,7 +8,7 @@ This project aim is to help debug and profile gstreamer pipeline.
 
 This is a work in progress
 
-Note that at the time of writing the version of gstreamer install in this project is : 1.16.2
+Note that at the time of writing the version of gstreamer installed in this project is : 1.16.2
 
 ## Architecture
 
