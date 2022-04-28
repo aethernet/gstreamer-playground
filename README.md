@@ -6,9 +6,21 @@ Balena-based gstreamer debug and profiling setup
 
 This project aim is to help debug and profile gstreamer pipeline.
 
-This is a work in progress
+Note that it will install gstreamer from the ubuntu repository.
 
-Note that at the time of writing the version of gstreamer installed in this project is : 1.16.2
+## TL;DR
+
+1. Set the env vars
+2. Deploy to your balena device
+3. Point your browser to your balena device url or ip to get the result
+
+| Var                       | Type                              | Default                   | Description                     |
+| ------------------------- | --------------------------------- | ------------------------- | ------------------------------- |
+| `PIPELINE`                | `string`                          | `videotestsrc ! fakesink` | Pipeline to execute             |
+| `STOP_PIPELINE_AFTER_SEC` | `int` (seconds)                   | `10`                      | Stop the pipline after duration |
+| `GST_TRACERS`             | `string` (tracers separated by ;) | `cpuusage;framerate`      | Gst-Shark tracers to use        |
+
+(cf all env, at the end of this readme)
 
 ## Architecture
 
@@ -66,7 +78,7 @@ If you prefer `png` over pdf, set `DOT_PROCESSING_PNG` to true.
 
 ### Manually turn the dots into images
 
-Turn off the automatic process by adding `NO_DOT_PROCESSING=true` to the env.
+Turn off the automatic process by adding `NO_DOT_PROCESSING` to the env.
 
 The `dot` files are stored in `/files/dots` which are served on port 80 by `edwin3/files` block.
 
@@ -155,6 +167,22 @@ You can turn off the wait by setting `NOWAIT_X` to true in the ENV.
 - `arecord -l` : list audio devices availble for recording
 - `aplay -l` : list audio devices availble for playing
 - `v4l2-ctl --list-devices` : list video devices
+
+## ENV
+
+| Var                       | Type                              | Default                   | Description                                                                                                   |
+| ------------------------- | --------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `PIPELINE`                | `string`                          | `videotestsrc ! fakesink` | Pipeline to execute                                                                                           |
+| `STOP_PIPELINE_AFTER_SEC` | `int` (seconds)                   | `10`                      | Stop the pipline after duration                                                                               |
+| `GST_TRACERS`             | `string` (tracers separated by ;) | `cpuusage;framerate`      | Gst-Shark tracers to use                                                                                      |
+| `GST_DEBUG`               | `string`                          | `GST_TRACER:7`            | Log Level (7 to get the traces) with filters to only get GST_TRACER from Gst-Shark                            |
+| `GST_DEBUG_DUMP_DOT_DIR`  | `string`                          | `/files/dots/`            | Directory to ouput the dot files                                                                              |
+| `PERSIST_FILES`           | `boolean`                         | `undefined`               | If set, will not delete previous dots, traces and graphs on rerun; it will probably override some of them tho |
+| `DOT_PROCESSING_PNG`      | `boolean`                         | `undefined`               | Output the graphical representation of the pipeline as a PNG instead of PDF                                   |
+| `NO_DOT_PROCESSING`       | `boolean`                         | `undefined`               | Prevent the production of a graphical representation of the pipeline as PDF or PNG                            |
+| `GST_SHARK_LOCATION`      | `string`                          | `/files/traces/`          | Directory to ouput the traces files from gst-shark                                                            |
+| `NO_TRACE_PROCESSING`     | `boolean`                         | `undefined`               | Prevent the production of a graphical representation of the traces as PDF                                     |
+| `NOWAIT_X`                | `boolean`                         | `undefined`               | Don't wait for a X Server to be ready before running the pipeline                                             |
 
 # TODO and next steps for this project
 
