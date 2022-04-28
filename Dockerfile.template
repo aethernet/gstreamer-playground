@@ -55,7 +55,13 @@ RUN install_packages \
 # Compile GST-Shark, this will take a while
 RUN git clone https://github.com/RidgeRun/gst-shark/
 WORKDIR /gst-shark
-RUN ./autogen.sh --prefix /usr/lib/ --libdir /usr/lib/arm-linux-gnueabihf/
+# This line for RaspberryPi
+# RUN ./autogen.sh --prefix /usr/lib/ --libdir /usr/lib/arm-linux-gnueabihf/
+# This line for Ubuntu64
+RUN ./autogen.sh --prefix /usr/ --libdir /usr/lib/x86_64-linux-gnu/ 
+# This line for Jetsons
+# RUN ./autogen.sh --prefix /usr/ --libdir /usr/lib/aarch64-linux-gnu/
+
 RUN make
 RUN make install 
 

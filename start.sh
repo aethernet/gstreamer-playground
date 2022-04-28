@@ -12,9 +12,9 @@ if [[ -z "$PERSIST_FILES" ]]; then
   echo "NOT DELETING FILES"
 else 
   echo "DELETING FILES"
+  rm /files/*
   rm /files/traces/*
   rm /files/dots/*
-  rm /files/*
 fi
 
 # Wait for xserver to accept connections if we're a receiver
@@ -36,7 +36,13 @@ if [[ -z "${PIPELINE}" ]] ; then
 else
   echo "PIPELINE is set, will run : $PIPELINE"
   gst-launch-1.0 -v $PIPELINE & >> /dev/tty0
+  # kill pipeline after STOP_PIPELINE_AFTER_SEC seconds
   /usr/src/killpipe.sh & >> /dev/tty0
+fi
+
+if [[ -z "${NO_TRACE_PROCESSING}" ]]; then
+  echo "WILL PROCESS TRACES WHEN GST-LAUNCH QUITS"
+  /usr/src/watchTraces.sh & >> /dev/tty0
 fi
 
 balena-idle

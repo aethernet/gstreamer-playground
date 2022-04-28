@@ -21,9 +21,9 @@ services:
     environment:
       - GST_DEBUG_DUMP_DOT_DIR=/files/dots
       - GST_DEBUG=GST_TRACER:7
-      - GST_TRACERS=cpuusage;framerate
+      - GST_TRACERS=framerate;cpuusage
       - GST_SHARK_LOCATION=/files/traces/
-      - PIPELINE=videotestsrc ! fakesink
+      - PIPELINE=videotestsrc ! videoconvert ! fakesink
       - STOP_PIPELINE_AFTER_SEC=10
 
   xserver:
