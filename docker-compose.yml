@@ -35,8 +35,8 @@ services:
     environment:
       - CURSOR=false
 
-  files_multiarch:
-    build: ./files
+  files:
+    build: ./files_multiarch
     restart: always
     volumes:
       - "files:/files"
