@@ -12,9 +12,9 @@ Note that at the time of writing the version of gstreamer installed in this proj
 
 ## Architecture
 
-This currently only runs on AMD64 architecture.
+This currently should runs on AMD64 (tested) and Raspberry pi (ARMv7 and aarch64, untested).
 
-It should runs on Raspberry Pi (ARMv7 or ARM64) by (un)commenting lines 55-63 of the Dockerfile.template.
+It could run on a jetson (aarch64) but without hardware accelleration (todo)
 
 ## What's inside ?
 
@@ -159,7 +159,6 @@ You can turn off the wait by setting `NOWAIT_X` to true in the ENV.
 # TODO and next steps for this project
 
 - [ ] make a jetson version
-- [ ] build a raspberry pi version
-- [ ] making a webpage with options to run an arbitrary pipe and get the resulting visualizations and graphs
+- [ ] make a webpage with options to run an arbitrary pipe and get the resulting visualizations and graphs
 - [ ] build a living library of useful pipelines
 - [ ] push everything to balena hub

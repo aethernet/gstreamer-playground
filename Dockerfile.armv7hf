@@ -1,0 +1,74 @@
+ARG BALENA_ARCH=%%BALENA_ARCH%%
+
+FROM balenalib/$BALENA_ARCH-ubuntu:latest
+
+# UDev is required to autodetect ALSA devices
+ENV UDEV=on
+
+# Install alsa, ladspa & gstreamer for UBUNTU
+RUN install_packages \
+    alsa-utils \
+    ladspa-sdk \
+    libgstreamer1.0-0 \
+    libgstreamer1.0-dev \
+    libgstreamer-plugins-base1.0-dev \
+    libgstreamer-plugins-bad1.0-dev \ 
+    gstreamer1.0-alsa \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    gstreamer1.0-tools \
+    gstreamer1.0-x \
+    gstreamer1.0-alsa \
+    gstreamer1.0-gl \
+    gstreamer1.0-gtk3 \
+    gstreamer1.0-qt5 \
+    gstreamer1.0-pulseaudio
+    # gstreamer1.0-omx-rpi
+
+# Install tools
+RUN install_packages \
+    v4l-utils \
+    mkvtoolnix \
+    x11-xserver-utils \
+    inotify-tools \
+    psmisc
+
+# Install dependencies
+RUN install_packages \
+    build-essential \
+    git \
+    graphviz \
+    libgraphviz-dev \
+    octave \
+    epstool \
+    babeltrace \
+    autoconf \
+    automake \
+    libtool \
+    gtk-doc-tools \
+    gnuplot \
+    fonts-freefont-otf 
+
+# Compile GST-Shark, this will take a while
+RUN git clone https://github.com/RidgeRun/gst-shark/
+WORKDIR /gst-shark
+# This line for RaspberryPi
+RUN ./autogen.sh --prefix /usr/lib/ --libdir /usr/lib/arm-linux-gnueabihf/
+# This line for Ubuntu64
+# RUN ./autogen.sh --prefix /usr/ --libdir /usr/lib/x86_64-linux-gnu/ 
+# This line for Jetsons
+# RUN ./autogen.sh --prefix /usr/ --libdir /usr/lib/aarch64-linux-gnu/
+
+RUN make
+RUN make install 
+
+COPY . /usr/src/
+RUN chmod +x /usr/src/*.sh
+
+WORKDIR /usr/src/
+
+# Start
+CMD [ "/bin/bash", "/usr/src/start.sh" ]
