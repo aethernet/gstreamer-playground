@@ -12,7 +12,7 @@ assets:
     type: blob.asset
     data:
       url: >-
-        https://raw.githubusercontent.com/aethernet/gstreamer/master/logo.png
+        https://raw.githubusercontent.com/aethernet/gstreamer-playground/master/logo.png
 data:
   applicationEnvironmentVariables:
     - PIPELINE: videotestsrc ! fakesink
