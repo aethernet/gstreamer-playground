@@ -1,5 +1,6 @@
 name: gstreamer-playground
 type: sw.application
+joinable: false
 description: >-
   Quickly start a gstreamer test and optimization setup on a raspberry pi or pc.
 assets:
