@@ -10,8 +10,10 @@ Note that it will install gstreamer from the ubuntu repository.
 
 ## TL;DR
 
-1. Set the env vars
-2. Deploy to your balena device
+[![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/aethernet/gstreamer-playground)
+
+1. Deploy to your balena device
+2. Set the ENV vars for your pipeline
 3. Point your browser to your balena device url or ip to get the result
 
 | Var                       | Type                              | Default                   | Description                     |
